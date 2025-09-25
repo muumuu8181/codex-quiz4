@@ -1,7 +1,7 @@
 
 (() => {
   const ROUND_SIZE = 5;
-  const VERSION = '0.04';
+  const VERSION = '0.05';
   const KEYS = {
     stats: 'quizStats_v1',
     setName: 'quizSetName_v1',
@@ -489,6 +489,7 @@
   // init
   updateMenuStats();
 })();
+
 
 
 

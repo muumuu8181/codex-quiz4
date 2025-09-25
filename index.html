@@ -4,11 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>4択クイズ</title>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./style.css?v=0.05" />
   </head>
   <body>
     <main id="app">
-      <div id="app-version" title="バージョン">v<span id="version">0.01</span></div>
+      <div id="app-version" title="バ�Eジョン">v<span id="version">0.05</span></div>
       <section id="screen-menu" class="screen active">
         <h1>4択クイズ</h1>
         <div class="stats">
@@ -16,14 +16,14 @@
           <div><span>挑戦回数</span><strong id="stat-attempts">0</strong></div>
         </div>
 
-        <button id="btn-start" class="primary">クイズ開始</button>
+        <button id="btn-start" class="primary">クイズ開姁E/button>
 
         <div class="section">
-          <h2>問題セット</h2>
-          <p class="hint">JSON または YAML を読み込めます。未選択時は内蔵サンプルを使用。</p>
+          <h2>問題セチE��</h2>
+          <p class="hint">JSON また�E YAML を読み込めます。未選択時は冁E��サンプルを使用、E/p>
           <label class="file">
             <input type="file" id="file-input" accept=".json,.yml,.yaml" />
-            <span>問題セットを読み込む</span>
+            <span>問題セチE��を読み込む</span>
           </label>
           <div id="set-name" class="muted"></div>
         </div>
@@ -34,12 +34,12 @@
 
       <section id="screen-quiz" class="screen">
         <div class="topbar">
-          <button id="btn-exit" class="link">← メニュー</button>
+          <button id="btn-exit" class="link">ↁEメニュー</button>
           <div id="quiz-progress">1 / 5</div>
         </div>
         <div class="card">
           <div id="quiz-category" class="chip"></div>
-          <h2 id="quiz-question">問題</h2>
+          <h2 id="quiz-question">問顁E/h2>
           <div id="choices" class="choices"></div>
           <div id="feedback" class="feedback"></div>
         </div>
@@ -58,7 +58,7 @@
 
       <section id="screen-history" class="screen">
         <div class="topbar">
-          <button id="btn-history-back" class="link">← メニュー</button>
+          <button id="btn-history-back" class="link">ↁEメニュー</button>
           <div>スコア履歴</div>
         </div>
         <ul id="history-list" class="history"></ul>
@@ -66,22 +66,25 @@
 
       <section id="screen-stats" class="screen">
         <div class="topbar">
-          <button id="btn-stats-back" class="link">← メニュー</button>
-          <div>ID別統計</div>
+          <button id="btn-stats-back" class="link">ↁEメニュー</button>
+          <div>ID別統訁E/div>
         </div>
         <div class="section">
-          <label for="stats-sort" class="hint">並び替え</label>
+          <label for="stats-sort" class="hint">並び替ぁE/label>
           <select id="stats-sort">
-            <option value="id">ID順</option>
-            <option value="wrong">誤答が多い順</option>
-            <option value="acc">正解率が低い順</option>
-            <option value="recent">最近プレイ順</option>
+            <option value="id">ID頁E/option>
+            <option value="wrong">誤答が多い頁E/option>
+            <option value="acc">正解玁E��低い頁E/option>
+            <option value="recent">最近�Eレイ頁E/option>
           </select>
         </div>
         <ul id="stats-list" class="history"></ul>
       </section>
     </main>
 
-    <script src="./app.js"></script>
+    <script src="./app.js?v=0.05"></script>
   </body>
   </html>
+
+
+
