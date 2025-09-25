@@ -69,6 +69,15 @@
           <button id="btn-stats-back" class="link">← メニュー</button>
           <div>ID別統計</div>
         </div>
+        <div class="section">
+          <label for="stats-sort" class="hint">並び替え</label>
+          <select id="stats-sort">
+            <option value="id">ID順</option>
+            <option value="wrong">誤答が多い順</option>
+            <option value="acc">正解率が低い順</option>
+            <option value="recent">最近プレイ順</option>
+          </select>
+        </div>
         <ul id="stats-list" class="history"></ul>
       </section>
     </main>

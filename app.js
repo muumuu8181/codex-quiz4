@@ -1,7 +1,7 @@
 
 (() => {
   const ROUND_SIZE = 5;
-  const VERSION = '0.03';
+  const VERSION = '0.04';
   const KEYS = {
     stats: 'quizStats_v1',
     setName: 'quizSetName_v1',
@@ -80,7 +80,7 @@
   }
   function setStats(s) { localStorage.setItem(KEYS.stats, JSON.stringify(s)); }
   function setSetName(name) { localStorage.setItem(KEYS.setName, name); }
-  function getSetName() { return localStorage.getItem(KEYS.setName) || '内蔵サンプル'; }
+  function getSetName() { return localStorage.getItem(KEYS.setName) || '冁E��サンプル'; }
 
   // Canonical key helpers for per-ID stats
   function canonicalKeyForQuestion(q) {
@@ -88,7 +88,7 @@
   }
   function ensureEntryForQuestion(s, q) {
     const key = canonicalKeyForQuestion(q);
-    if (!s.byId[key]) s.byId[key] = { id: q.id ?? null, title: q.question, attempts: 0, correct: 0, wrong: 0, last: null, category: q.category, series: [] };
+    if (!s.byId[key]) s.byId[key] = { id: q.id ?? null, title: q.question, attempts: 0, correct: 0, wrong: 0, last: null, category: q.category, series: [], recent: [] };
     // migrate legacy keys (pure id string or pure question string)
     const legacyIdKey = String(q.id ?? '');
     const legacyQKey = String(q.question ?? '');
@@ -133,7 +133,7 @@
     const s = getStats();
     els.total.textContent = `${s.totalCorrect} / ${s.totalQuestions}`;
     els.attempts.textContent = `${s.attemptsCount}`;
-    els.setName.textContent = `現在の問題セット: ${getSetName()}`;
+    els.setName.textContent = `現在の問題セチE��: ${getSetName()}`;
     const v = document.getElementById('version');
     if (v) v.textContent = VERSION;
   }
@@ -201,7 +201,7 @@
 
   function normalizeData(data) {
     const list = Array.isArray(data) ? data : data?.questions;
-    if (!Array.isArray(list)) throw new Error('不正なデータ形式: questions 配列が見つかりません');
+    if (!Array.isArray(list)) throw new Error('不正なチE�Eタ形弁E questions 配�Eが見つかりません');
     return list.map((q, i) => {
       const question = q.question || q.text;
       const choices = q.choices || q.options;
@@ -223,7 +223,7 @@
     let data;
     if (name.endsWith('.json')) data = JSON.parse(text);
     else if (name.endsWith('.yml') || name.endsWith('.yaml')) data = parseYAML(text);
-    else throw new Error('未対応の拡張子です');
+    else throw new Error('未対応�E拡張子でぁE);
     const list = normalizeData(data);
     if (!list.length) throw new Error('問題がありません');
     questionBank = list;
@@ -233,36 +233,36 @@
 
   // Default questions (30)
   const DEFAULT_QUESTIONS = [
-    { id: 1, category: '化学', question: '水の化学式はどれ？', choices: ['HO', 'H2O', 'H2O2', 'OH2O'], answer: 1 },
-    { id: 2, category: '化学', question: '食塩の主成分は？', choices: ['NaCl', 'KCl', 'CaCO3', 'Na2CO3'], answer: 0 },
-    { id: 3, category: '化学', question: 'pH=7 の水溶液は？', choices: ['酸性', '中性', '塩基性', '強酸性'], answer: 1 },
-    { id: 4, category: '化学', question: '炭酸の化学式は？', choices: ['HCO3−', 'H2CO3', 'CO2', 'CO3^2−'], answer: 1 },
-    { id: 5, category: '化学', question: 'アボガドロ定数のオーダーは？', choices: ['10^19', '10^20', '10^23', '10^26'], answer: 2 },
-    { id: 6, category: '化学', question: '酸化とは一般に何が増えること？', choices: ['水素', '電子', '酸素', '中性子'], answer: 2 },
-    { id: 7, category: '化学', question: '塩酸の主成分は？', choices: ['HCl', 'HNO3', 'H2SO4', 'CH3COOH'], answer: 0 },
-    { id: 8, category: '化学', question: 'メタンの化学式は？', choices: ['CH4', 'C2H6', 'C3H8', 'CH3OH'], answer: 0 },
-    { id: 9, category: '化学', question: 'イオン結合の例はどれ？', choices: ['H2O', 'NaCl', 'CH4', 'CO2'], answer: 1 },
-    { id: 10, category: '化学', question: '触媒の働きは？', choices: ['平衡を変える', '反応熱を増やす', '活性化エネルギーを下げる', '生成物を増やす'], answer: 2 },
-    { id: 11, category: '人体', question: '赤血球の主な働きは？', choices: ['免疫', '酸素運搬', '血液凝固', 'ホルモン分泌'], answer: 1 },
-    { id: 12, category: '人体', question: '心臓の心室はいくつ？', choices: ['1', '2', '3', '4'], answer: 1 },
-    { id: 13, category: '人体', question: 'インスリンを分泌する臓器は？', choices: ['肝臓', '膵臓', '腎臓', '甲状腺'], answer: 1 },
-    { id: 14, category: '人体', question: '神経伝達物質でないものは？', choices: ['ドーパミン', 'アセチルコリン', 'セロトニン', 'ヘモグロビン'], answer: 3 },
-    { id: 15, category: '人体', question: '呼吸で主に吸う気体は？', choices: ['酸素', '窒素', '二酸化炭素', 'アルゴン'], answer: 1 },
-    { id: 16, category: '人体', question: '骨の主成分は？', choices: ['セルロース', 'キチン', 'ヒドロキシアパタイト', 'ケラチン'], answer: 2 },
-    { id: 17, category: '人体', question: '腎臓の機能単位は？', choices: ['ニューロン', 'ネフロン', 'サルコメア', '肺胞'], answer: 1 },
-    { id: 18, category: '人体', question: '血液凝固に関与するのは？', choices: ['白血球', '赤血球', '血小板', 'リンパ球'], answer: 2 },
-    { id: 19, category: '人体', question: '視覚の受容体はどこ？', choices: ['網膜', '角膜', '虹彩', '水晶体'], answer: 0 },
-    { id: 20, category: '人体', question: '体温調節の中枢は？', choices: ['小脳', '延髄', '視床下部', '大脳皮質'], answer: 2 },
-    { id: 21, category: '生物', question: '細胞のエネルギー通貨は？', choices: ['NADH', 'ATP', 'GTP', 'ADP'], answer: 1 },
-    { id: 22, category: '生物', question: 'DNAの塩基にないものは？', choices: ['アデニン', 'ウラシル', 'グアニン', 'シトシン'], answer: 1 },
-    { id: 23, category: '生物', question: '光合成の主な場は？', choices: ['ミトコンドリア', '葉緑体', '小胞体', 'ゴルジ体'], answer: 1 },
-    { id: 24, category: '生物', question: '生物の分類で界の直下は？', choices: ['網', '門', '科', '属'], answer: 1 },
-    { id: 25, category: '生物', question: '原核生物にない構造は？', choices: ['核膜', '細胞膜', 'リボソーム', '細胞壁'], answer: 0 },
-    { id: 26, category: '生物', question: '酵素活性に最も影響するのは？', choices: ['光', '温度とpH', '音', '圧力'], answer: 1 },
-    { id: 27, category: '生物', question: '浸透圧で正しいのは？', choices: ['水は低濃度へ', '溶質が移動', '水は高濃度へ', '圧は温度に無関係'], answer: 2 },
-    { id: 28, category: '生物', question: '常染色体の説明で正しいのは？', choices: ['性決定のみ関与', '体細胞に存在', '減数分裂で消失', 'ミトコンドリアにある'], answer: 1 },
-    { id: 29, category: '生物', question: '相利共生の例は？', choices: ['寄生バチと宿主', 'コロナとヒト', '地衣類', 'ノミとイヌ'], answer: 2 },
-    { id: 30, category: '生物', question: '生態系の生産者は？', choices: ['草食動物', '肉食動物', '分解者', '光合成生物'], answer: 3 },
+    { id: 1, category: '化学', question: '水の化学式�Eどれ！E, choices: ['HO', 'H2O', 'H2O2', 'OH2O'], answer: 1 },
+    { id: 2, category: '化学', question: '食塩の主成�Eは�E�E, choices: ['NaCl', 'KCl', 'CaCO3', 'Na2CO3'], answer: 0 },
+    { id: 3, category: '化学', question: 'pH=7 の水溶液は�E�E, choices: ['酸性', '中性', '塩基性', '強酸性'], answer: 1 },
+    { id: 4, category: '化学', question: '炭酸の化学式�E�E�E, choices: ['HCO3∁E, 'H2CO3', 'CO2', 'CO3^2∁E], answer: 1 },
+    { id: 5, category: '化学', question: 'アボガドロ定数のオーダーは�E�E, choices: ['10^19', '10^20', '10^23', '10^26'], answer: 2 },
+    { id: 6, category: '化学', question: '酸化とは一般に何が増えること�E�E, choices: ['水素', '電孁E, '酸素', '中性孁E], answer: 2 },
+    { id: 7, category: '化学', question: '塩酸の主成�Eは�E�E, choices: ['HCl', 'HNO3', 'H2SO4', 'CH3COOH'], answer: 0 },
+    { id: 8, category: '化学', question: 'メタンの化学式�E�E�E, choices: ['CH4', 'C2H6', 'C3H8', 'CH3OH'], answer: 0 },
+    { id: 9, category: '化学', question: 'イオン結合の例�Eどれ！E, choices: ['H2O', 'NaCl', 'CH4', 'CO2'], answer: 1 },
+    { id: 10, category: '化学', question: '触媒�E働きは�E�E, choices: ['平衡を変えめE, '反応�Eを増やぁE, '活性化エネルギーを下げめE, '生�E物を増やぁE], answer: 2 },
+    { id: 11, category: '人佁E, question: '赤血琁E�E主な働きは�E�E, choices: ['免疫', '酸素運搬', '血液凝固', 'ホルモン刁E��E], answer: 1 },
+    { id: 12, category: '人佁E, question: '忁E��の忁E��はぁE��つ�E�E, choices: ['1', '2', '3', '4'], answer: 1 },
+    { id: 13, category: '人佁E, question: 'インスリンを�E泌する臓器は�E�E, choices: ['肝臓', '膵臁E, '腎臓', '甲状腺'], answer: 1 },
+    { id: 14, category: '人佁E, question: '神経伝達物質でなぁE��のは�E�E, choices: ['ド�Eパミン', 'アセチルコリン', 'セロトニン', 'ヘモグロビン'], answer: 3 },
+    { id: 15, category: '人佁E, question: '呼吸で主に吸ぁE��体�E�E�E, choices: ['酸素', '窒素', '二�E化炭素', 'アルゴン'], answer: 1 },
+    { id: 16, category: '人佁E, question: '骨の主成�Eは�E�E, choices: ['セルロース', 'キチン', 'ヒドロキシアパタイチE, 'ケラチン'], answer: 2 },
+    { id: 17, category: '人佁E, question: '腎臓の機�E単位�E�E�E, choices: ['ニューロン', 'ネフロン', 'サルコメア', '肺胁E], answer: 1 },
+    { id: 18, category: '人佁E, question: '血液凝固に関与する�Eは�E�E, choices: ['白血琁E, '赤血琁E, '血小板', 'リンパ球'], answer: 2 },
+    { id: 19, category: '人佁E, question: '視覚�E受容体�Eどこ！E, choices: ['網膁E, '角�E', '虹彩', '水晶佁E], answer: 0 },
+    { id: 20, category: '人佁E, question: '体温調節の中枢は�E�E, choices: ['小脳', '延髁E, '視床下部', '大脳皮質'], answer: 2 },
+    { id: 21, category: '生物', question: '細胞�Eエネルギー通貨は�E�E, choices: ['NADH', 'ATP', 'GTP', 'ADP'], answer: 1 },
+    { id: 22, category: '生物', question: 'DNAの塩基になぁE��のは�E�E, choices: ['アチE��ン', 'ウラシル', 'グアニン', 'シトシン'], answer: 1 },
+    { id: 23, category: '生物', question: '光合成�E主な場は�E�E, choices: ['ミトコンドリア', '葉緑佁E, '小�E佁E, 'ゴルジ佁E], answer: 1 },
+    { id: 24, category: '生物', question: '生物の刁E��で界�E直下�E�E�E, choices: ['網', '門', '私E, '屁E], answer: 1 },
+    { id: 25, category: '生物', question: '原核生物になぁE��造は�E�E, choices: ['核膁E, '細胞�E', 'リボソーム', '細胞壁E], answer: 0 },
+    { id: 26, category: '生物', question: '酵素活性に最も影響するのは�E�E, choices: ['允E, '温度とpH', '音', '圧劁E], answer: 1 },
+    { id: 27, category: '生物', question: '浸透圧で正しいのは�E�E, choices: ['水は低濁E��へ', '溶質が移勁E, '水は高濁E��へ', '圧は温度に無関俁E], answer: 2 },
+    { id: 28, category: '生物', question: '常染色体�E説明で正しいのは�E�E, choices: ['性決定�Eみ関丁E, '体細胞に存在', '減数刁E��で消失', 'ミトコンドリアにある'], answer: 1 },
+    { id: 29, category: '生物', question: '相利共生�E例�E�E�E, choices: ['寁E��バチと宿主', 'コロナとヒト', '地衣顁E, 'ノミとイチE], answer: 2 },
+    { id: 30, category: '生物', question: '生�E系の生産老E�E�E�E, choices: ['草食動物', '肉食動物', '刁E��老E, '光合成生物'], answer: 3 },
   ];
 
   let questionBank = DEFAULT_QUESTIONS.slice();
@@ -322,6 +322,9 @@
     const ser = s.byId[key].series || [];
     if (ser.length && ser[ser.length-1].d === today) ser[ser.length-1].c += 1; else ser.push({ d: today, c: 1 });
     s.byId[key].series = ser;
+    const rec = s.byId[key].recent || [];
+    rec.push({ ts: Date.now(), ok: isCorrect ? 1 : 0 });
+    s.byId[key].recent = rec.slice(-50);
     setStats(s);
   }
 
@@ -337,7 +340,7 @@
     });
     const isCorrect = choiceIndex === q.answer;
     if (isCorrect) {
-      els.feedback.textContent = '正解！';
+      els.feedback.textContent = '正解�E�E;
       els.feedback.classList.add('ok');
       correctCount++;
       playCorrect();
@@ -391,7 +394,7 @@
         left.innerHTML = `<div class="meta">#${i + 1} ・ID ${r.id}・${r.category || ''}</div><div class="q">${r.question}</div>`;
         const your = r.choices[r.selected] ?? '-';
         const corr = r.choices[r.correct] ?? '-';
-        right.innerHTML = r.correctFlag ? `<div class="correct">正解</div><small>${corr}</small>` : `<div class="wrong">不正解</div><small>あなた: ${your}<br/>正解: ${corr}</small>`;
+        right.innerHTML = r.correctFlag ? `<div class="correct">正解</div><small>${corr}</small>` : `<div class="wrong">不正解</div><small>あなぁE ${your}<br/>正解: ${corr}</small>`;
         li.appendChild(left); li.appendChild(right);
         els.roundReview.appendChild(li);
       });
@@ -413,7 +416,7 @@
         const left = document.createElement('div');
         const right = document.createElement('div');
         const d = new Date(a.ts);
-        left.innerHTML = `<strong>${a.correct} / ${a.total}</strong><br/><small>${d.toLocaleString()}・${a.set || 'セット'}</small>`;
+        left.innerHTML = `<strong>${a.correct} / ${a.total}</strong><br/><small>${d.toLocaleString()}・${a.set || 'セチE��'}</small>`;
         right.innerHTML = `<small>#${s.attempts.length - (s.attempts.indexOf(a))}</small>`;
         li.appendChild(left); li.appendChild(right);
         els.historyList.appendChild(li);
@@ -431,11 +434,16 @@
       li.textContent = 'まだ統計がありません';
       els.statsList.appendChild(li);
     } else {
+      const mode = (document.getElementById('stats-sort')?.value) || 'id';
       items.sort((a,b) => {
-        const ai = (a.id ?? NaN), bi = (b.id ?? NaN);
+        const accA = (a.attempts ? a.correct / a.attempts : 0);
+        const accB = (b.attempts ? b.correct / b.attempts : 0);
+        if (mode === 'wrong') return (b.wrong||0) - (a.wrong||0);
+        if (mode === 'acc') return accA - accB;
+        if (mode === 'recent') return (b.last||0) - (a.last||0);
+        const ai = Number(a.id), bi = Number(b.id);
         if (!Number.isNaN(ai) && !Number.isNaN(bi)) return ai - bi;
-        if (!Number.isNaN(ai)) return -1;
-        if (!Number.isNaN(bi)) return 1;
+        if (!Number.isNaN(ai)) return -1; if (!Number.isNaN(bi)) return 1;
         return String(a.title||'').localeCompare(String(b.title||''));
       });
       items.forEach(it => {
@@ -445,7 +453,7 @@
         const series = (it.series || []).map(x => x.c).join(',');
         const labelId = (it.id != null && !Number.isNaN(Number(it.id))) ? `ID ${it.id}` : 'ID -';
         const title = it.title || '';
-        li.innerHTML = `<div><strong>${labelId}</strong><br/><small>${it.category || ''}</small><br/><small class=\"meta\">${title}</small><br/><small class=\"meta\">${series}</small></div><div><strong>${acc}%</strong><br/><small>${it.correct||0}/${total} 正解・誤答 ${it.wrong||0}</small></div>`;
+        li.innerHTML = `<div><strong>${labelId}</strong><br/><small>${it.category || ''}</small><br/><small class=\"meta\">${title}</small><br/><small class=\"meta\">${series}</small></div><div><strong>${acc}%</strong><br/><small>${it.correct||0}/${total} 正解・誤筁E${it.wrong||0}</small></div>`;
         els.statsList.appendChild(li);
       });
     }
@@ -462,13 +470,14 @@
   els.historyBack.addEventListener('click', () => { clearAdvanceTimer(); show('menu'); });
   els.statsBtn?.addEventListener('click', showStats);
   els.statsBack?.addEventListener('click', () => { clearAdvanceTimer(); show('menu'); });
+  document.getElementById('stats-sort')?.addEventListener('change', showStats); show('menu'); });
 
   els.file.addEventListener('change', async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     try {
       await loadFromFile(file);
-      alert('問題セットを読み込みました');
+      alert('問題セチE��を読み込みました');
     } catch (err) {
       console.error(err);
       alert('読み込みエラー: ' + (err?.message || err));
@@ -480,3 +489,8 @@
   // init
   updateMenuStats();
 })();
+
+
+
+
+
